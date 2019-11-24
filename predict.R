@@ -24,6 +24,8 @@ pe1 <- day1[c('temp', 'atemp', 'hum', 'windspeed', 'registered', 'tot')]
 lmout <- lm(temp ~ .,data=pe1)
 # print(lmout)
 xd <- preprocessx(pe1[,-5],2)  # prep for k-NN, k <= 10
+knnbasic <- basicKNN(pe1, pe1$temp, pe1, 2)
 knnout <- knnest(pe1$temp,xd,2)
 # print(pe1$hum[1:5])
-parvsnonparplot(lmout,knnout)
+parvsnonparplot(knnbasic,knnout)
+?parvsnonparplot

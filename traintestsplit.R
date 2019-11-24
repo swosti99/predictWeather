@@ -1,0 +1,1 @@
+# function that returns training data and testing data based on split ratio
