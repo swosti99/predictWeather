@@ -12,13 +12,18 @@ predictWeather <- function() {
   print(model(4))
 }
 
-data(peDumms)
-print(peDumms[1:10,"age"])
+data(day1)
+# print(day1[floor(runif(10, 1, 100)),])
+pe1 <- day1[c('temp', 'atemp', 'hum', 'windspeed', 'registered', 'tot')]
+# pe1 <- day1
+# print(peDumms[1:5, ])
 # print(model(3))
 # print(predictWeather())
 # data(peDumms)
 # pe1 <- peDumms[c('age','educ.14','educ.16','sex.1','wageinc','wkswrkd')]
-# lmout <- lm(wageinc ~ .,data=pe1)
-# xd <- preprocessx(pe1[,-5],10)  # prep for k-NN, k <= 10
-# knnout <- knnest(pe1$wageinc,xd,10)
-# parvsnonparplot(lmout,knnout)
+lmout <- lm(temp ~ .,data=pe1)
+# print(lmout)
+xd <- preprocessx(pe1[,-5],2)  # prep for k-NN, k <= 10
+knnout <- knnest(pe1$temp,xd,2)
+# print(pe1$hum[1:5])
+parvsnonparplot(lmout,knnout)
