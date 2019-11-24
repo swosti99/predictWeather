@@ -5,6 +5,11 @@ library(regtools)
 # load the dataset
 data(day1)
 
+# TODO : a function to test and compare two models
+# TODO : a function to graph data about two models
+# TODO : a function to show correlations between different features of data
+# TODO : check if clustering works to detect season or month info 
+#       (x = data[-"season"], y = data"season")
 model_options <- list(basicKNN, knnest)
 # predictWeather <- function() {
 #   
@@ -15,19 +20,12 @@ model_options <- list(basicKNN, knnest)
 
 pe1 <- day1[c('temp', 'atemp', 'hum', 'windspeed', 'registered', 'tot')]
 splitData(pe1, 0.7)
-# pe1 <- day1
-# print(peDumms[1:5, ])
-# print(model(3))
-# print(predictWeather())
-# data(peDumms)
-# pe1 <- peDumms[c('age','educ.14','educ.16','sex.1','wageinc','wkswrkd')]
 lmout <- lm(temp ~ .,data=trainData)
 lmout <- predict.lm(object = lmout, newdata = testData[-1])
 plot(testData[,"temp"], lmout)
 knnTrain <- preprocessx(trainData[,],2)  # prep for k-NN, k <= 10
 knnbasic <- basicKNN(trainData, testData$temp, testData, 4)
 # knnout <- knnest(knnTrain$temp,knnTrain,2)
-# print(pe1$hum[1:5])
 # parvsnonparplot(knnbasic,knnout)
 # print(knnbasic)
 # plot(knnbasic[1][c('temp')], knnbasic[2][c('temp')])
