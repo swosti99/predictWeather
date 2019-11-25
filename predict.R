@@ -21,7 +21,7 @@ predictWeather <- function() {
   lmout <- lm(temp ~ .,data=trainData)
   # plot(lmout)
   lmout <- predict.lm(object = lmout, newdata = testData[-1])
-  error <- (mean( abs((testData[,"temp"] - lmout)/lmout) ))
+  error <- mean( abs(testData[,"temp"] - lmout)/lmout )
   # plot(1:length(lmout), testData[, "temp"] - lmout, "h") # to plot out erros
   
   # plot should look close to y = x if working correctly
