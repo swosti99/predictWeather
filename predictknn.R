@@ -1,5 +1,4 @@
-predictTemp <- function(pe1) {
-  splitData(pe1, 0.8)
+predictUsingKNN <- function() {
   
   # print(names(day1))
   # print(day1$dteday)
