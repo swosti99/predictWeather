@@ -13,7 +13,6 @@ predictUsingLm <- function(error = TRUE, plot = FALSE) {
   # print(mformula)
   lmout <- lm(mformula,data=trainData)
   # print(mean(abs(lmout$residuals)))
-  # plot(lmout)
   predictions <- predict.lm(object = lmout, newdata = testData[predictors])
   # print(intClasses == toPredict)
   if(sum(intClasses == toPredict) > 0) {
@@ -31,5 +30,8 @@ predictUsingLm <- function(error = TRUE, plot = FALSE) {
     plot(predictions,testData[,toPredict],"p", xlab = 'ground truth', ylab = 'linear prediction', 
          main = 'linear model performance ', sub = paste0('Error (%) : ',error))
   }
-  return(error)
+  
+  # plot(predictions,testData[,toPredict],"p", xlab = 'ground truth', ylab = 'linear prediction', 
+       # main = 'linear model performance ', sub = paste0('Error (%) : ',error))
+  return(list(lmout, error))
 }

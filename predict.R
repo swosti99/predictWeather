@@ -1,36 +1,4 @@
-# _________________________________________________________________________________________________
-# *************************************************************************************************
-# Global variables :
-# *************************************************************************************************
-# day1       : the entire dataset for this task
-# dataset    : day1 dataset, but only with relevant columns kept
-# predictors : the names of the columns to be used as predictors
-# toPredict  : the name of the column to predict
-# intClasses : the columns that contain integer data, 
-#            : we use this to round off predictions for those columns
-# trainData  : the dataset to train the models on
-# testData   : the datatset to test the models' performance(s)
-# _________________________________________________________________________________________________
-# *************************************************************************************************
-# Functions :
-# *************************************************************************************************
-# splitData(dataSet, splitRatio)
-# |randomly splits the data in 'dataSet' into 'trainData' and 'testData' with ratio 'splitRatio'|
-# *************************************************************************************************
-# predictFromTo(featureCols, predcitCol) 
-# |predicts the column predictCol using columns featureCols|
-#   featureCols :- the columns to be used as predictors
-#   predictCol  :- the column to be predicted
-# *************************************************************************************************
-# predictUsingLm(plot = TRUE)
-# |gets predictions using linear model (lm()) and handles all associated tasks|
-# |a plot is shown by default|
-# *************************************************************************************************
-# predictUsingKNN(plot = TRUE)
-# *
-# *
-# *
-# *************************************************************************************************
+# Refer to README for documentation of this code
 # TODO : predictUsingKNN()
 # TODO : a function to graph data about two models
 # TODO : a function to show correlations between different features of data
@@ -55,13 +23,13 @@ intClasses <- c('season' ,'yr', 'mnth', 'weathersit')
 data(day1)
 # select the columns that are relevant in our task (we will give reasons for ignoring rest)
 dataset <- day1[c('mnth', 'season', 'weathersit',  'temp', 'hum', 'windspeed')]
-# dataset <- scale(dataset)
+# file path to store the pdf containing plots
+PDFpath <- '/Users/swosti/Desktop/ecs132/predictWeather/results'
+
 predictFromTo <- function(featureCols, predictCol) {
   predictors <<- featureCols
   toPredict <<- predictCol
-  # print(toPredict)
-  # knnPred <- predictUsingKNN()
-  lmErr <- predictUsingLm()
+  lmErr <- predictUsingLm(z)
   return(lmErr)
 }
 
@@ -69,14 +37,17 @@ predictAll <- function() {
   # split the dataset into trainData and testData (global variables)
   splitData(dataset, 0.8)
   allcols <- 1:length(names(dataset))
-  errors <- c()
+  results <-  c()
+  # print(results$error)
   for(i in allcols) {
     featureCols <- names(dataset)[allcols[allcols != i]]
     predictCol <- names(dataset)[i]
-    errors <- c(errors, predictFromTo(featureCols = featureCols, predictCol = predictCol))
+    results <- rbind(results, predictFromTo(featureCols = featureCols, predictCol = predictCol))
   }
-  errors <- signif(100*errors, digits = 2)
-  return (errors)
+ 
+  colnames(results) <- c('lmout', 'error')
+  results[,'error'] <- signif(100*as.numeric(results[,'error']), digits = 2)
+  return (results)
 }
 
 showErrors <- function(err) {
@@ -88,7 +59,25 @@ showErrors <- function(err) {
     cat(paste0('Error for predicting "', features[i],'"', spaces, ' : ', err[i]), '\n')
   }
 }
-errors <- replicate(500, predictAll())
+
+savePDF <- function(models) {
+  path <- paste0(PDFpath,'.pdf')
+  pdf(file=path)
+  for(m in models) {
+    plot(m)
+  }
+  dev.off()
+}
+results <- replicate(300, predictAll())
+
+
+errors <- apply(results[,'error',], 2,as.numeric)
+# get indices of the best performing model for eaach category
+minIdx <- apply(errors, 1, which.min)
+# save the best performing models for each category
+bestModels <- c()
+for(i in 1:nrow(errors)) {
+  bestModels[i] = results[i,'lmout',minIdx[i]]
+}
+savePDF(bestModels)
 showErrors(rowMeans(errors))
-
-
