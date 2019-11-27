@@ -20,8 +20,17 @@ pe1 <- day1[c('season' ,'yr', 'mnth', 'weathersit',  'temp', 'atemp', 'hum', 'wi
 # TODO : make a markov model to predict weather based on data from i days 
 #        to predict tomorrow's weather
 # *windspeed may be important
+# TODO : attempt to define what the coefficients mean
+# TODO : make a function predictFromTo(featuresCols,predcitCol)
+#        featureCols :  indices of columns to use as features
+#        predictCol  :  index of column to predict
+
 model_options <- list(basicKNN, knnest)
 
 
 # predictTemp()
 predictSeason(pe1)
+
+
+
+
