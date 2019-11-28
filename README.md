@@ -24,7 +24,7 @@
 #   featureCols :- the columns to be used as predictors
 #   predictCol  :- the column to be predicted
 # *************************************************************************************************
-# predictUsingLm(plot = TRUE)
+# predictUsingLm(SHOW = TRUE)
 # |gets predictions using linear model (lm()) and handles all associated tasks|
 # |a plot is shown by default|
 # *************************************************************************************************

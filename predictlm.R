@@ -1,4 +1,4 @@
-predictUsingLm <- function(error = TRUE, plot = FALSE) {
+predictUsingLm <- function(error = TRUE, SHOW = FALSE) {
   mformula <- paste0(toPredict, '~')
   # print(mformula)
   # print(predictors)
@@ -26,7 +26,7 @@ predictUsingLm <- function(error = TRUE, plot = FALSE) {
   # print(nrow(testData))
   # error <- 1 - correct/nrow(testData)
   # plot should look close to y = x if working correctly
-  if(plot) {
+  if(SHOW) {
     plot(predictions,testData[,toPredict],"p", xlab = 'ground truth', ylab = 'linear prediction', 
          main = 'linear model performance ', sub = paste0('Error (%) : ',error))
   }

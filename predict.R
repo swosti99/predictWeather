@@ -1,4 +1,7 @@
+# _________________________________________________________________________________________________
+# *************************************************************************************************
 # Refer to README for documentation of this code
+# *************************************************************************************************
 # TODO : predictUsingKNN()
 # TODO : a function to graph data about two models
 # TODO : a function to show correlations between different features of data
@@ -15,6 +18,7 @@
 # loading regtools and our own functions 
 source("datasplit.R")
 source("predictlm.R")
+source("handleresults.R")
 # source("predictknn.R")
 library(regtools)
 intClasses <- c('season' ,'yr', 'mnth', 'weathersit')
@@ -29,7 +33,7 @@ PDFpath <- '/Users/swosti/Desktop/ecs132/predictWeather/results'
 predictFromTo <- function(featureCols, predictCol) {
   predictors <<- featureCols
   toPredict <<- predictCol
-  lmErr <- predictUsingLm(z)
+  lmErr <- predictUsingLm()
   return(lmErr)
 }
 
@@ -44,40 +48,10 @@ predictAll <- function() {
     predictCol <- names(dataset)[i]
     results <- rbind(results, predictFromTo(featureCols = featureCols, predictCol = predictCol))
   }
- 
   colnames(results) <- c('lmout', 'error')
-  results[,'error'] <- signif(100*as.numeric(results[,'error']), digits = 2)
+  results[,'error'] <- signif(as.numeric(results[,'error']), digits = 2)
   return (results)
 }
-
-showErrors <- function(err) {
-  features <- names(dataset)
-  featuresLen <-nchar(features)
-  maxLen <- max(featuresLen)
-  for(i in 1:length(features)) {
-    spaces <- paste(rep(' ', maxLen - featuresLen[i]), collapse = '')
-    cat(paste0('Error for predicting "', features[i],'"', spaces, ' : ', err[i]), '\n')
-  }
-}
-
-savePDF <- function(models) {
-  path <- paste0(PDFpath,'.pdf')
-  pdf(file=path)
-  for(m in models) {
-    plot(m)
-  }
-  dev.off()
-}
 results <- replicate(300, predictAll())
+handleResults(results)
 
-
-errors <- apply(results[,'error',], 2,as.numeric)
-# get indices of the best performing model for eaach category
-minIdx <- apply(errors, 1, which.min)
-# save the best performing models for each category
-bestModels <- c()
-for(i in 1:nrow(errors)) {
-  bestModels[i] = results[i,'lmout',minIdx[i]]
-}
-savePDF(bestModels)
-showErrors(rowMeans(errors))
