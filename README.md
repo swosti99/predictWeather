@@ -1,6 +1,9 @@
-predictWeather  
+# predictWeather  
 predicting different aspects in "day1" dataset using regtools package in R  
-# Global variables :
+
+For information on label representation in dataset, go to:
+[dataset documentation](https://rstudio-pubs-static.s3.amazonaws.com/98995_27868fd8b4994930833443c7ae31fce6)
+## Global variables :
 __day1__       : the entire dataset for this task  
 __dataset__    : day1 dataset, but only with relevant columns kept  
 __predictors__ : the names of the columns to be used as predictors  
@@ -10,7 +13,7 @@ __intClasses__ : the columns that contain integer data,
 __trainData__  : the dataset to train the models on  
 __testData__   : the datatset to test the models' performance(s)  
 
-# Functions :
+## Functions :
   
 __splitData(dataSet, splitRatio)__  
 |randomly splits the data in 'dataSet' into 'trainData' and 'testData' with ratio 'splitRatio'|  
