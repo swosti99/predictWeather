@@ -15,7 +15,8 @@ handleResults <- function(results) {
 }
 
 showErrors <- function(err) {
-  features <- names(dataset)
+  # for consistent spacing 
+  features <- nd
   featuresLen <-nchar(features)
   maxLen <- max(featuresLen)
   for(i in 1:length(features)) {
@@ -26,7 +27,7 @@ showErrors <- function(err) {
 
 saveErrorHist <- function(errors) {
   # print the histograms
-  histPath <- paste0(PDFpath, 'Hist.pdf', collapse = '')
+  histPath <- paste0(PDFpath, 'ErrorsHistogram.pdf', collapse = '')
   pdf(file = histPath)
   for(i in 1:length(names(dataset))) {
     hist(as.numeric(errors[i,]), xlab = paste('error for ', nd[i], collapse = ''),
@@ -44,7 +45,7 @@ saveBestModels <- function(results, errors) {
     bestModels[i] = results[i,'lmout',minIdx[i]]
   }
   # now we print to PDF
-  path <- paste0(PDFpath,'.pdf')
+  path <- paste0(PDFpath,'BestModels.pdf')
   pdf(file=path)
   for(m in bestModels) {
     plot(m)
