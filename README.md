@@ -1,3 +1,4 @@
+<pre>
 # predictWeather  
 predicting different aspects in "day1" dataset using regtools package in R.
 
@@ -27,8 +28,7 @@ __predictUsingLm(SHOW = FALSE)__
 |gets predictions using linear model (lm()) and handles all associated tasks|  
 |SHOW controls whether a plot should be printed|  
 
-
 __predictUsingKNN(SHOW = FALSE)__ 
 | gets predictions using clustering model (basicKNN()) and handles all associated tasks|
 |SHOW controls whether a plot should be printed|
-/*************************************************************************************************/
+</pre>
