@@ -3,7 +3,7 @@
 predicting different aspects in "day1" dataset using regtools package in R.
 
 For information on label representation in dataset, go to:
-[dataset documentation](https://rstudio-pubs-static.s3.amazonaws.com/98995_27868fd8b4994930833443c7ae31fce6)
+[dataset documentation](https://rstudio-pubs-static.s3.amazonaws.com/98995_27868fd8b4994930833443c7ae31fce6.html)
 ## Global variables :
 <pre><code>
 <b>day1</b>       : the entire dataset for this task  
