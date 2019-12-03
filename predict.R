@@ -29,6 +29,8 @@ data(day1)
 dataset <- day1[c('mnth', 'season', 'weathersit',  'temp', 'hum', 'windspeed')]
 # file path to store the pdf containing plots
 PDFpath <- '/Users/swosti/Desktop/ecs132/predictWeather/results'
+# names of the columns of dataset
+nd <- names(dataset)
 
 predictFromTo <- function(featureCols, predictCol) {
   predictors <<- featureCols
@@ -54,4 +56,10 @@ predictAll <- function() {
 }
 results <- replicate(300, predictAll())
 handleResults(results)
+
+print("________________________________________________________________")
+dataset <- day1[c('mnth', 'season', 'weathersit',  'temp', 'atemp', 'hum', 'windspeed')]
+
+badresults <- replicate(300, predictAll())
+handleResults(badresults)
 
