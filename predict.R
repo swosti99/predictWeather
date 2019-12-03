@@ -2,7 +2,6 @@
 # *************************************************************************************************
 # Refer to README for documentation of this code
 # *************************************************************************************************
-# TODO : predictUsingKNN()
 # TODO : a function to graph data about two models
 # TODO : a function to show correlations between different features of data
 # TODO : check if clustering works to detect season or month info 
@@ -15,6 +14,11 @@
 # *windspeed may be important
 # TODO : attempt to define what the coefficients mean
 
+# _________________________________________________________________________________________________
+# *************************************************************************************************
+# The main code starts
+# *************************************************************************************************
+
 # loading regtools and our own functions 
 library(regtools)
 source("datasplit.R")
@@ -26,10 +30,13 @@ intClasses <- c('season' ,'yr', 'mnth', 'weathersit')
 
 # load the dataset
 data(day1)
+
 # select the columns that are relevant in our task (we will give reasons for ignoring rest)
 dataset <- day1[c('mnth', 'season', 'weathersit',  'temp', 'hum', 'windspeed')]
+
 # file path to store the pdf containing plots of linear model
-PDFpath <- '/Users/swosti/Desktop/ecs132/predictWeather/LinearResults/results'
+PDFpath <- paste0(getwd(), '/LinearResults/')
+
 # names of the columns of dataset
 nd <- names(dataset)
 
@@ -39,19 +46,20 @@ modelToUse <- get(modelName)
 predictFromTo <- function(featureCols, predictCol) {
   predictors <<- featureCols
   toPredict <<- predictCol
-  result <- modelToUse()
-  return(result)
+  return(modelToUse())
 }
 
 predictAll <- function() {
+  # names of the columns of dataset
+  nd <<- names(dataset)
   # split the dataset into trainData and testData (global variables)
   splitData(dataset, 0.8)
-  allcols <- 1:length(names(dataset))
+  allcols <- 1:length(nd)
   outcome <-  c()
   # print(results$error)
   for(i in allcols) {
-    featureCols <- names(dataset)[allcols[allcols != i]]
-    predictCol <- names(dataset)[i]
+    featureCols <- nd[allcols[allcols != i]]
+    predictCol <- nd[i]
     outcome <- rbind(outcome, predictFromTo(featureCols = featureCols, predictCol = predictCol))
   }
   if(modelName == 'predictUsingLm') {
@@ -75,8 +83,7 @@ print("________________________________________________________________")
 modelName <- 'predictUsingKNN'
 modelToUse <- get(modelName)
 # file path to store the pdf containing plots of clustering model
-PDFpath <- '/Users/swosti/Desktop/ecs132/predictWeather/KNNResults/results'
-
+PDFpath <- paste0(getwd(), '/KNNResults/')
 knnresults <- replicate(100, predictAll())
 handleResults(knnresults)
 
