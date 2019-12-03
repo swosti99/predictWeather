@@ -1,5 +1,5 @@
 # predictWeather  
-predicting different aspects in "day1" dataset using regtools package in R  
+predicting different aspects in "day1" dataset using regtools package in R.
 
 For information on label representation in dataset, go to:
 [dataset documentation](https://rstudio-pubs-static.s3.amazonaws.com/98995_27868fd8b4994930833443c7ae31fce6)
@@ -29,7 +29,6 @@ __predictUsingLm(SHOW = FALSE)__
 
 
 __predictUsingKNN(SHOW = FALSE)__ 
-*  
-*  
-*  
-*************************************************************************************************  
+| gets predictions using clustering model (basicKNN()) and handles all associated tasks|
+|SHOW controls whether a plot should be printed|
+/*************************************************************************************************/
