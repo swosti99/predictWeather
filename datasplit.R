@@ -1,4 +1,3 @@
-
 # function that returns training data and testing data based on split ratio
 splitData <- function(dataSet, splitRatio) {
   trainSize <- floor(splitRatio*nrow(dataSet))

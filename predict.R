@@ -2,12 +2,11 @@
 # *************************************************************************************************
 # Refer to README for documentation of this code
 # *************************************************************************************************
-# TODO : a function to graph data about two models
+
 # TODO : a function to show correlations between different features of data
-# TODO : check if clustering works to detect season or month info 
+# TODO : check if clustering works to detect season or month info without explicit y labels
 #        (x = data[-"season"], y = data"season")
-# TODO : check collinearity among the variables and also graph
-#        the correlation matrix
+# TODO : check collinearity among the variables and also graph the correlation matrix
 # TODO : analysis of the data
 # TODO : make a markov model to predict weather based on data from i days 
 #        to predict tomorrow's weather
@@ -56,7 +55,6 @@ predictAll <- function() {
   splitData(dataset, 0.8)
   allcols <- 1:length(nd)
   outcome <-  c()
-  # print(results$error)
   for(i in allcols) {
     featureCols <- nd[allcols[allcols != i]]
     predictCol <- nd[i]
