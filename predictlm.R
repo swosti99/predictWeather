@@ -30,8 +30,5 @@ predictUsingLm <- function(error = TRUE, SHOW = FALSE) {
     plot(predictions,testData[,toPredict],"p", xlab = 'ground truth', ylab = 'linear prediction', 
          main = 'linear model performance ', sub = paste0('Error (%) : ',error))
   }
-  
-  # plot(predictions,testData[,toPredict],"p", xlab = 'ground truth', ylab = 'linear prediction', 
-       # main = 'linear model performance ', sub = paste0('Error (%) : ',error))
   return(list(lmout, error))
 }
