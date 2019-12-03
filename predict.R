@@ -16,50 +16,68 @@
 # TODO : attempt to define what the coefficients mean
 
 # loading regtools and our own functions 
+library(regtools)
 source("datasplit.R")
 source("predictlm.R")
 source("handleresults.R")
-# source("predictknn.R")
-library(regtools)
+source("predictknn.R")
+
 intClasses <- c('season' ,'yr', 'mnth', 'weathersit')
 
 # load the dataset
 data(day1)
 # select the columns that are relevant in our task (we will give reasons for ignoring rest)
 dataset <- day1[c('mnth', 'season', 'weathersit',  'temp', 'hum', 'windspeed')]
-# file path to store the pdf containing plots
-PDFpath <- '/Users/swosti/Desktop/ecs132/predictWeather/results'
+# file path to store the pdf containing plots of linear model
+PDFpath <- '/Users/swosti/Desktop/ecs132/predictWeather/LinearResults/results'
 # names of the columns of dataset
 nd <- names(dataset)
+
+modelName <- 'predictUsingLm'
+modelToUse <- get(modelName)
 
 predictFromTo <- function(featureCols, predictCol) {
   predictors <<- featureCols
   toPredict <<- predictCol
-  lmErr <- predictUsingLm()
-  return(lmErr)
+  result <- modelToUse()
+  return(result)
 }
 
 predictAll <- function() {
   # split the dataset into trainData and testData (global variables)
   splitData(dataset, 0.8)
   allcols <- 1:length(names(dataset))
-  results <-  c()
+  outcome <-  c()
   # print(results$error)
   for(i in allcols) {
     featureCols <- names(dataset)[allcols[allcols != i]]
     predictCol <- names(dataset)[i]
-    results <- rbind(results, predictFromTo(featureCols = featureCols, predictCol = predictCol))
+    outcome <- rbind(outcome, predictFromTo(featureCols = featureCols, predictCol = predictCol))
   }
-  colnames(results) <- c('lmout', 'error')
-  results[,'error'] <- signif(as.numeric(results[,'error']), digits = 2)
-  return (results)
+  if(modelName == 'predictUsingLm') {
+    colnames(outcome) <- c('lmout', 'error')
+    outcome[,'error'] <- signif(as.numeric(outcome[,'error']), digits = 2)
+  }
+  return (outcome)
 }
-results <- replicate(300, predictAll())
-handleResults(results)
+lmresults <- replicate(300, predictAll())
 
 print("________________________________________________________________")
-dataset <- day1[c('mnth', 'season', 'weathersit',  'temp', 'atemp', 'hum', 'windspeed')]
+print("                    Errors using linear model                   ")
+print("________________________________________________________________")
 
-badresults <- replicate(300, predictAll())
-handleResults(badresults)
+handleResults(lmresults)
+
+print("________________________________________________________________")
+print("                     Errors using KNN                           ")
+print("________________________________________________________________")
+
+modelName <- 'predictUsingKNN'
+modelToUse <- get(modelName)
+# file path to store the pdf containing plots of clustering model
+PDFpath <- '/Users/swosti/Desktop/ecs132/predictWeather/KNNResults/results'
+
+knnresults <- replicate(100, predictAll())
+handleResults(knnresults)
+
 
