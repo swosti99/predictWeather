@@ -33,11 +33,14 @@ data(day1)
 # select the columns that are relevant in our task (we will give reasons for ignoring rest)
 dataset <- day1[c('mnth', 'season', 'weathersit',  'temp', 'hum', 'windspeed')]
 
-# file path to store the pdf containing plots of linear model
-PDFpath <- paste0(getwd(), '/LinearResults/')
-
 # names of the columns of dataset
 nd <- names(dataset)
+
+# we wil consider  data from previous k days
+k <- 3
+
+# file path to store the pdf containing plots of linear model
+PDFpath <- paste0(getwd(), '/LinearResults/')
 
 modelName <- 'predictUsingLm'
 modelToUse <- get(modelName)
@@ -52,7 +55,7 @@ predictAll <- function() {
   # names of the columns of dataset
   nd <<- names(dataset)
   # split the dataset into trainData and testData (global variables)
-  splitData(dataset, 0.8)
+  splitData(dataset, 0.6)
   allcols <- 1:length(nd)
   outcome <-  c()
   for(i in allcols) {
