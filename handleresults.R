@@ -29,7 +29,7 @@ saveErrorHist <- function(errors) {
   # print the histograms
   histPath <- paste0(PDFpath, 'ErrorsHistogram.pdf', collapse = '')
   pdf(file = histPath)
-  for(i in 1:length(names(dataset))) {
+  for(i in 1:length(nd)) {
     hist(as.numeric(errors[i,]), xlab = paste('error for ', nd[i], collapse = ''),
          main = paste('Histogram of errors for "', nd[i],'"', collapse = ''))
   }

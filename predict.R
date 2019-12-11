@@ -1,35 +1,51 @@
-# _________________________________________________________________________________________________
-# *************************************************************************************************
-# Refer to README for documentation of this code
-# *************************************************************************************************
+startTest <- function() {
+    # file path to store the pdf containing plots of linear model
+    PDFpath <<- paste0(resPath, '/LinearResults/')
 
-# TODO : a function to show correlations between different features of data
-# TODO : check if clustering works to detect season or month info without explicit y labels
-#        (x = data[-"season"], y = data"season")
-# TODO : check collinearity among the variables and also graph the correlation matrix
-# TODO : analysis of the data
-# TODO : make a markov model to predict weather based on data from i days 
-#        to predict tomorrow's weather
-# *windspeed may be important
-# TODO : attempt to define what the coefficients mean
+    
 
-# _________________________________________________________________________________________________
-# *************************************************************************************************
-# The main code starts
-# *************************************************************************************************
-# loading regtools and our own functions 
-library(regtools)
-source("datasplit.R")
-source("predictlm.R")
-source("handleresults.R")
-source("predictknn.R")
+    predictFromTo <- function(featureCols, predictCol) {
+      predictors <<- featureCols
+      toPredict <<- predictCol
+      return(modelToUse())
+    }
 
-runtests <- function(option) {
-  if(option == 'kdays') {
-    source('predictfromkdays.R')
-  } else if(option == 'sameday'){
-    source('predictfromsameday.R')
-  } else {
-    print('Option can be "kdays" or "sameday"')
-  }
+    predictAll <- function() {
+      # split the dataset into trainData and testData (global variables)
+      splitData(0.6)
+      allcols <- nd
+      outcome <-  c()
+      for(i in allcols) {
+        featureCols <- names(dataset)[names(dataset) != i]
+        predictCol <- i
+        outcome <- rbind(outcome, predictFromTo(featureCols = featureCols, predictCol = predictCol))
+      }
+      if(modelName == 'predictUsingLm') {
+        colnames(outcome) <- c('lmout', 'error')
+        outcome[,'error'] <- signif(as.numeric(outcome[,'error']), digits = 2)
+      }
+      return (outcome)
+    }
+    
+    modelName <<- 'predictUsingLm'
+    modelToUse <<- get(modelName)
+    
+    lmresults <- replicate(100, predictAll())
+
+    print("________________________________________________________________")
+    print("                    Errors using linear model                   ")
+    print("________________________________________________________________")
+
+    handleResults(lmresults)
+
+    print("________________________________________________________________")
+    print("                     Errors using KNN                           ")
+    print("________________________________________________________________")
+
+    modelName <<- 'predictUsingKNN'
+    modelToUse <<- get(modelName)
+    # file path to store the pdf containing plots of clustering model
+    PDFpath <<- paste0(resPath, '/KNNResults/')
+    knnresults <- replicate(100, predictAll())
+    handleResults(knnresults)
 }
