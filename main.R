@@ -38,6 +38,11 @@ nd <- names(dataset)
 # we wil consider  data from previous k days
 k <- 3
 
+# to print correlation matrix
+pdf(file=paste0(getwd(),'/correlationmatrix.pdf'))
+corrplot(cor(dataset), method = "circle", type = "lower")
+corrplot(cor(day1[,-2]), method = "circle", type = "lower")
+dev.off()
 
 runtests <- function(option) {
   if(option == 'kdays') {
