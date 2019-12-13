@@ -1,8 +1,8 @@
 handleResults <- function(results) {
   if(modelName == 'predictUsingLm') {
     colnames(results) <- c('lmout', 'error')
-    results[,'error',] <- signif(100*as.numeric(results[,'error',]), digits = 2)
-    errors <- apply(results[,'error',], 2,as.numeric)
+    # results[,'error',] <- signif(100*as.numeric(results[,'error',]), digits = 2)
+    errors <- signif(100*apply(results[,'error',], 2,as.numeric), digits = 2)
     # only save best models for linear case
     saveBestModels(results, errors)
   } else {
@@ -11,7 +11,7 @@ handleResults <- function(results) {
   # save (as PDF) the histograms of errors for each category
   saveErrorHist(errors)
   # show the mean errors for each categor on the console
-  showErrors(rowMeans(errors))
+  showErrors(rowMeans(errors))  
 }
 
 showErrors <- function(err) {
