@@ -78,11 +78,11 @@ errorsVSk <- function(max = 10) { # check 0-10 by default
   }
   # now print the errors as a function of k
   for(i in 1:length(nd)) {
-    jpeg(file=paste0(getwd(),'/ErrorChangingK/lm/',nd[i],'.jpeg'))
-    plot(x = 1:max, y = lmavgerr[,i], type = "b", xlab = k, ylab = paste0("Error for ", nd[i]))
+    jpeg(file=paste0(getwd(),'/ErrorChangingK/lm/lm_',nd[i],'.jpeg'))
+    plot(x = 1:max, y = lmavgerr[,i], type = "b", xlab = k, ylab = paste0("Validation error for ", nd[i]))
     dev.off()
-    jpeg(file=paste0(getwd(),'/ErrorChangingK/knn/',nd[i],'.jpeg'))
-    plot(x = 1:max, y = knnavgerr[,i], type = "b", xlab = k, ylab = paste0("Error for ", nd[i]))
+    jpeg(file=paste0(getwd(),'/ErrorChangingK/knn/knn_',nd[i],'.jpeg'))
+    plot(x = 1:max, y = knnavgerr[,i], type = "b", xlab = k, ylab = paste0("Validation error for ", nd[i]))
     dev.off()
   }
 }
