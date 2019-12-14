@@ -4,7 +4,7 @@ startTest <- function(SHOW = FALSE) {
 
     
 
-    predictFromTo <- function(featureCols, predictCol) {
+    predictFromTo <<- function(featureCols, predictCol) {
       predictors <<- featureCols
       toPredict <<- predictCol
       return(modelToUse())
@@ -12,7 +12,7 @@ startTest <- function(SHOW = FALSE) {
 
     predictAll <- function() {
       # split the dataset into trainData and testData (global variables)
-      splitData(0.6)
+      splitData(splitrate)
       allcols <- setdiff(names(dataset), nd)
       outcome <-  c()
       for(i in nd) {
@@ -30,11 +30,11 @@ startTest <- function(SHOW = FALSE) {
     modelName <<- 'predictUsingLm'
     modelToUse <<- get(modelName)
     
-    lmresults <<- replicate(5, predictAll())
+    lmresults <<- replicate(20, predictAll())
 
     modelName <<- 'predictUsingKNN'
     modelToUse <<- get(modelName)
-    knnresults <- replicate(5, predictAll())
+    knnresults <- replicate(20, predictAll())
     
     if(SHOW) {
       print("________________________________________________________________")
@@ -52,3 +52,7 @@ startTest <- function(SHOW = FALSE) {
       knnavgerr <<- rbind(knnavgerr, rowMeans((apply(knnresults, 3, as.numeric))))
     }
 }
+
+# > predictors <<- c('temp')
+# > toPredict <<- c('atemp')
+# > as.numeric(predictUsingLm()[,'error'])

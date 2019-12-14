@@ -20,5 +20,11 @@ addPrevDaysData <- function(k) {
         dataset[(k+1):nrow(dataset), paste0(nd[col], prevday)] <- toadd[,prevday]  
       }
     }
+    # we add date here
+    dataset[,'date'] <- sin(as.integer(substring(gsub("-", "", day1$dteday), 3)))
     dataset <<- dataset[(k+1):nrow(dataset),]
 }
+# dates12 = day1$dteday[dates > 120000]
+# dates12_days = (as.integer(substr(dates12, start = 5, stop = 6))-1)*30 + as.integer(substr(dates12, start = 7, stop = 8))
+# plot(dates12_days, max_temp*sin((3.14/365)*dates12_days) + min_temp) # real graph looks close
+# plot(as.numeric(dates12), day1[idx2012,'temp']) # this is true temp plot

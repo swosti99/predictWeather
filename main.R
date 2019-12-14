@@ -37,7 +37,8 @@ if(length(dev.list())) {
 data(day1)
 
 # select the columns that are relevant in our task (we will give reasons for ignoring rest)
-dataset <- day1[c('mnth', 'season', 'weathersit',  'temp', 'hum', 'windspeed')]
+# we add the date inside the function addkdays()
+dataset <- day1[,c('season', 'weathersit',  'temp', 'hum', 'windspeed')]
 
 # columns that are best predicted using multi-class binary classification
 intClasses <- c('season' ,'yr', 'mnth', 'weathersit')
@@ -61,17 +62,38 @@ dev.off()
 # correlation data may be more useful if viewed for each season separately
 for(s in 1:4) {
   jpeg(file=paste0(getwd(),'/CorrelationData/PerSeason/corseason',s,'.jpeg'))
-  corrplot(cor(dataset[dataset$season == s, -2]), method = "circle", type = "lower", title = paste0('season ',s),, mar = mar)
+  corrplot(cor(dataset[dataset$season == s, -1]), method = "circle", type = "lower", title = paste0('season ',s),, mar = mar)
   dev.off()
 }
 
-
+splitrate <- 0.6
+errorsVSsplit<- function(min = 0.1, max = 0.95) {
+  lmavgerr <<- c()
+  knnavgerr <<- c()
+  resPath <<- paste0(getwd(), '/manysplits')
+  for(k in seq(min, max, by=0.1)) {
+    splitrate <<- k
+    dataset <<- day1[,c('season', 'weathersit',  'temp', 'hum', 'windspeed')]
+    # add data from k days to each row
+    addPrevDaysData(5)
+    startTest()
+  }
+  # now print the errors as a function of split rate
+  for(i in 1:length(nd)) {
+    jpeg(file=paste0(getwd(),'/ErrorChangingSplit/lm/lm_',nd[i],'.jpeg'))
+    plot(x = seq(min, max, by=0.1), y = lmavgerr[,i], type = "b", xlab = 'split rate', ylab = paste0("Validation error for ", nd[i]))
+    dev.off()
+    jpeg(file=paste0(getwd(),'/ErrorChangingSplit/knn/knn_',nd[i],'.jpeg'))
+    plot(x = seq(min, max, by=0.1), y = knnavgerr[,i], type = "b", xlab = 'split rate', ylab = paste0("Validation error for ", nd[i]))
+    dev.off()
+  }
+}
 errorsVSk <- function(max = 10) { # check 0-10 by default
   lmavgerr <<- c()
   knnavgerr <<- c()
   resPath <<- paste0(getwd(), '/manyk')
   for(k in 1:max) {
-    dataset <<- day1[c('mnth', 'season', 'weathersit',  'temp', 'hum', 'windspeed')]
+    dataset <<- day1[,c('season', 'weathersit',  'temp', 'hum', 'windspeed')]
     # add data from k days to each row
     addPrevDaysData(k)
     startTest()
@@ -102,3 +124,9 @@ runtests <- function(option) {
   }
   startTest()
 }
+
+# > dataset <<- day1[,c('temp', 'atemp')]
+# > splitData(0.7) # intro train and test
+# > predictors <<- c('temp')
+# > toPredict <<- c('atemp')
+# > as.numeric(predictUsingLm()[,'error'])
