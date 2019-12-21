@@ -1,6 +1,10 @@
 
 # predictWeather  
-predicting different aspects in "day1" dataset using regtools package in R.
+This term project is an attempt to learn statictical modeling methods using various tools in R.  
+
+The code may not be exhaustive, but is sufficient for the reader to understand our ideas.  
+
+We predict different aspects in "day1" dataset using regtools package in R.  
 
 For information on label representation in dataset, go to:
 [dataset documentation](https://rstudio-pubs-static.s3.amazonaws.com/98995_27868fd8b4994930833443c7ae31fce6.html)
